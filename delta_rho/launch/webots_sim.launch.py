@@ -76,7 +76,6 @@ def generate_launch_description():
         arguments=['joint_state_broadcaster', '-c', '/controller_manager', # 'holonomic_robot/controller_manager',
                    '--controller-manager-timeout', '100']
     )
-    delayed_state_broadcaster = TimerAction(period=3.0,actions=[joint_state_broadcaster_spawner])
 
     joint_trajectory_controller_spawner = Node(
         package='controller_manager',
@@ -85,7 +84,6 @@ def generate_launch_description():
         arguments=['joint_trajectory_controller', '-c', '/controller_manager', # 'holonomic_robot/controller_manager',
                    '--controller-manager-timeout', '100']
     )
-    delayed_trajectory_controller = TimerAction(period=3.0,actions=[joint_trajectory_controller_spawner])
 
     robot_state_publisher = Node(
         package='robot_state_publisher',
@@ -105,11 +103,8 @@ def generate_launch_description():
             default_value='my_world.wbt',
             description='Choose a world file to launch'
         ),
-        # Start webots
+        # Start webots and ros2supervisor
         webots,
-
-        # Start Ros2Supervisor node with delay
-        # TimerAction(period=3.0,actions=[webots._supervisor]),
         webots._supervisor,
         
         # Request URDF spawn
@@ -117,10 +112,8 @@ def generate_launch_description():
         
         # Other ROS2 nodes
         robot_state_publisher,
-        # joint_state_broadcaster_spawner,
-        delayed_state_broadcaster,
+        joint_state_broadcaster_spawner,
         # joint_trajectory_controller_spawner,
-        delayed_trajectory_controller,
 
         # Launch the driver node once the URDF is spawned
         launch.actions.RegisterEventHandler(

@@ -7,9 +7,6 @@
   <xacro:property name="chassis_height" value="0.05"/> <!-- 8 cm height -->
   <xacro:property name="wheel_radius" value="0.04"/> <!-- half of 8cm -->
   <xacro:property name="wheel_width" value="0.02"/> <!-- 2cm wheel width -->
-  <!-- Include colors, etc. -->
-  <!-- <xacro:include filename="include/robot_params.xacro"/> -->
-
 
   <!-- Base Link -->
   <link name="base_link">

@@ -1,6 +1,0 @@
-<?xml version="1.0" ?>
-<robot name="holonomic_robot">
-    <webots>
-        <plugin type="delta_rho.robot_driver.RobotDriver" />
-    </webots>
-</robot>
