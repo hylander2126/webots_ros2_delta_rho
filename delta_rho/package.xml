@@ -15,9 +15,8 @@
   <depend>webots_ros2_control</depend>
   <depend>robot_state_publisher</depend>
   <depend>controller_manager</depend>
-  <depend>joint_state_broadcaster</depend>
-  <depend>joint_trajectory_controller</depend>
-  <depend>xacro</depend>
+  <!-- <depend>joint_state_broadcaster</depend> -->
+  <!-- <depend>joint_trajectory_controller</depend> -->
   <!-- <depend>ros2_control</depend> -->
 
   <test_depend>ament_copyright</test_depend>

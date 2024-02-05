@@ -43,8 +43,6 @@ def generate_launch_description():
         name='holonomic_robot',
         robot_description=robot_description,
         relative_path_prefix=os.path.join(package_dir, 'description'),
-        # translation='0, 0, 0',
-        # rotation='0, 0, 0, 1',
     )
 
     # Define your robot driver here
@@ -52,32 +50,46 @@ def generate_launch_description():
     ros2_control_params = os.path.join(package_dir, 'config', 'holonomic_drive.yaml')
     robot_driver = WebotsController(
         robot_name='holonomic_robot',
+        # namespace='holonomic_robot',
         parameters=[
             {'robot_description': robot_description},
             {'use_sim_time': True},
             {'set_robot_state_publisher': True},
+            # {'webots_ros2_driver': },
             ros2_control_params
         ],
     )
+
+    # TEMP CONTROL NODE TO FIX MISSING /CONTROLLER_MANAGER ISSUE
+    # control_node = Node(
+	# 	package='controller_manager',
+	# 	executable='ros2_control_node',
+	# 	parameters=[ros2_control_params], # DO NOT USE 'robot_description', defaults to /robot_description topic
+	# 	output='both'
+	# )
 
     # Additional nodes
     joint_state_broadcaster_spawner = Node(
         package='controller_manager',
         executable='spawner',
         output='screen',
-        arguments=['joint_state_broadcaster', '-c', '/controller_manager']
+        arguments=['joint_state_broadcaster', '-c', '/controller_manager', # 'holonomic_robot/controller_manager',
+                   '--controller-manager-timeout', '100']
     )
+    delayed_state_broadcaster = TimerAction(period=3.0,actions=[joint_state_broadcaster_spawner])
 
     joint_trajectory_controller_spawner = Node(
         package='controller_manager',
         executable='spawner',
         output='screen',
-        arguments=['joint_trajectory_controller', '-c', '/controller_manager']
+        arguments=['joint_trajectory_controller', '-c', '/controller_manager', # 'holonomic_robot/controller_manager',
+                   '--controller-manager-timeout', '100']
     )
+    delayed_trajectory_controller = TimerAction(period=3.0,actions=[joint_trajectory_controller_spawner])
 
     robot_state_publisher = Node(
         package='robot_state_publisher',
-        namespace='holonomic_robot',
+        # namespace='holonomic_robot',
         executable='robot_state_publisher',
         output='screen',
         parameters=[{
@@ -105,8 +117,10 @@ def generate_launch_description():
         
         # Other ROS2 nodes
         robot_state_publisher,
-        joint_state_broadcaster_spawner,
-        joint_trajectory_controller_spawner,
+        # joint_state_broadcaster_spawner,
+        delayed_state_broadcaster,
+        # joint_trajectory_controller_spawner,
+        delayed_trajectory_controller,
 
         # Launch the driver node once the URDF is spawned
         launch.actions.RegisterEventHandler(

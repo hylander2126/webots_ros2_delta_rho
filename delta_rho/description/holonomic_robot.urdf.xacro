@@ -88,24 +88,18 @@
     
     <joint name="frontL_joint">
       <command_interface name="position">
-        <param name="min" value="-3.14159"/>
-        <param name="max" value="3.14159"/>
       </command_interface>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
     </joint>
     <joint name="frontR_joint">
       <command_interface name="position">
-        <param name="min" value="-3.14159"/>
-        <param name="max" value="3.14159"/>
       </command_interface>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
     </joint>
     <joint name="rear_joint">
       <command_interface name="position">
-        <param name="min" value="-3.14159"/>
-        <param name="max" value="3.14159"/>
       </command_interface>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
