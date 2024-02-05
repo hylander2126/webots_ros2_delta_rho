@@ -28,7 +28,7 @@ def generate_launch_description():
     # - `mode` (str): Can be `pause`, `realtime`, or `fast`.
     # - `ros2_supervisor` (bool): Spawn the `Ros2Supervisor` custom node that communicates with a Supervisor robot in the simulation.
     webots = WebotsLauncher(
-        world=PathJoinSubstitution([package_dir, 'worlds', world]), # 'my_world.wbt']),
+        world=PathJoinSubstitution([package_dir, 'worlds', world]),
         ros2_supervisor=True
     )
 
