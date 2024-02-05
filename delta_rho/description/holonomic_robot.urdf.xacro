@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="holonomic_robot">
+
+  <!-- Macros/Properties -->
+  <xacro:property name="chassis_radius" value="0.075"/> <!-- half of 15cm -->
+  <xacro:property name="chassis_height" value="0.05"/> <!-- 8 cm height -->
+  <xacro:property name="wheel_radius" value="0.04"/> <!-- half of 8cm -->
+  <xacro:property name="wheel_width" value="0.02"/> <!-- 2cm wheel width -->
+  <!-- Include colors, etc. -->
+  <!-- <xacro:include filename="include/robot_params.xacro"/> -->
+
+
+  <!-- Base Link -->
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 ${wheel_radius + chassis_height/2}" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${chassis_radius}" length="${chassis_height}"/> 
+      </geometry>
+      <color rgba="1 0.3 0.1 1"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 ${wheel_radius + chassis_height/2}" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${chassis_radius}" length="${chassis_height}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 ${wheel_radius + chassis_height/2}" rpy="0 0 0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0"
+              iyy="1.0" iyz="0.0"
+              izz="1.0" />
+    </inertial>
+  </link>
+
+  <!-- Wheels -->
+  <xacro:macro name="wheel" params="name x y rpy">
+    <joint name="${name}_joint" type="continuous"> <!-- NOT HAPPY WITH ANYTHING OTHER THAN 'FIXED' in RVIZ-->
+      <parent link="base_link"/>
+      <child link="${name}"/>
+      <origin xyz="${x} ${y} ${wheel_radius}" rpy="${rpy}"/> 
+      <axis xyz="0 0 1"/>
+    </joint>
+
+    <link name="${name}">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+        <color rgba="1 1 1 1"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="1.0"/>
+        <inertia ixx="1.0" ixy="0.0" ixz="0.0"
+                iyy="1.0" iyz="0.0"
+                izz="1.0" />
+      </inertial>
+    </link>
+  </xacro:macro>
+
+  <!-- Instantiate Wheels -->
+  <xacro:wheel name="frontL" x="${chassis_radius}" y="0" rpy="0 1.5707 0"/>
+  <xacro:wheel name="frontR" x="${-chassis_radius/2}" y="${0.866*chassis_radius}" rpy="0 1.5707 2.0944"/> <!-- 120 degrees -->
+  <xacro:wheel name="rear" x="${-chassis_radius/2}" y="${-0.866*chassis_radius}" rpy="0 1.5707 -2.0944"/> <!-- 240 degrees -->
+
+
+  <!-- Webots Control Tags-->
+  <webots>
+    <!-- <plugin type="delta_rho.robot_driver.RobotDriver" /> -->
+    <plugin type="webots_ros2_control::Ros2Control"/>
+  </webots>
+
+<!-- ROS2 CONTROL -->
+  <ros2_control name="WebotsControl" type="system">
+    <hardware>
+      <plugin>webots_ros2_control::Ros2ControlSystem</plugin>
+    </hardware>
+    
+    <joint name="frontL_joint">
+      <command_interface name="position">
+        <param name="min" value="-3.14159"/>
+        <param name="max" value="3.14159"/>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="frontR_joint">
+      <command_interface name="position">
+        <param name="min" value="-3.14159"/>
+        <param name="max" value="3.14159"/>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="rear_joint">
+      <command_interface name="position">
+        <param name="min" value="-3.14159"/>
+        <param name="max" value="3.14159"/>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+  </ros2_control>
+  
+</robot>

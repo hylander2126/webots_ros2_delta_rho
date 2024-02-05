@@ -1,0 +1,30 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100 # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+
+joint_trajectory_controller:
+  ros__parameters:
+    joints:
+      - frontL_joint
+      - frontR_joint
+      - rear_joint
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+    gains:
+      frontL_joint:
+        ff_velocity_scale: 1.0
+    
+    allow_nonzero_velocity_at_trajectory_end: false
