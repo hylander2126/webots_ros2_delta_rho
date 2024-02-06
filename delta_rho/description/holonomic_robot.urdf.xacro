@@ -66,19 +66,19 @@
   </xacro:macro>
 
   <!-- Instantiate Wheels -->
-  <xacro:wheel name="frontL" x="${chassis_radius}" y="0" rpy="0 1.5707 0"/>
-  <xacro:wheel name="frontR" x="${-chassis_radius/2}" y="${0.866*chassis_radius}" rpy="0 1.5707 2.0944"/> <!-- 120 degrees -->
-  <xacro:wheel name="rear" x="${-chassis_radius/2}" y="${-0.866*chassis_radius}" rpy="0 1.5707 -2.0944"/> <!-- 240 degrees -->
+  <xacro:wheel name="frontR" x="${0.866*chassis_radius}" y="${0.5*chassis_radius}" rpy="0 1.5708 0.5236"/> <!-- 30 degrees -->
+  <xacro:wheel name="frontL" x="${-0.866*chassis_radius}" y="${0.5*chassis_radius}" rpy="0 1.5708 2.618"/> <!-- 150 degrees -->
+  <xacro:wheel name="rear" x="${0}" y="${-chassis_radius}" rpy="0 1.5708 -1.5708"/>                        <!-- 270 degrees -->
 
 
   <!-- Webots Control Tags-->
   <webots>
-    <!-- <plugin type="delta_rho.robot_driver.RobotDriver" /> -->
-    <plugin type="webots_ros2_control::Ros2Control"/>
+    <plugin type="delta_rho.robot_driver.RobotDriver" />
+    <!-- <plugin type="webots_ros2_control::Ros2Control"/> -->
   </webots>
 
 <!-- ROS2 CONTROL -->
-  <ros2_control name="WebotsControl" type="system">
+  <!-- <ros2_control name="WebotsControl" type="system">
     <hardware>
       <plugin>webots_ros2_control::Ros2ControlSystem</plugin>
     </hardware>
@@ -102,6 +102,6 @@
       <state_interface name="velocity"/>
     </joint>
 
-  </ros2_control>
+  </ros2_control> -->
   
 </robot>

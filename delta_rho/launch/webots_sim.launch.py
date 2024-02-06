@@ -91,7 +91,7 @@ def generate_launch_description():
         executable='robot_state_publisher',
         output='screen',
         parameters=[{
-            'robot_description': '<robot name=""><link name=""/></robot>',
+            'robot_description': robot_description, # '<robot name=""><link name=""/></robot>',
         }]
     )
 
@@ -109,12 +109,12 @@ def generate_launch_description():
         
         # Request URDF spawn
         spawn_URDF,
-        
+
         # Other ROS2 nodes
         robot_state_publisher,
-        joint_state_broadcaster_spawner,
+        # joint_state_broadcaster_spawner,
         # joint_trajectory_controller_spawner,
-
+        
         # Launch the driver node once the URDF is spawned
         launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessIO(
