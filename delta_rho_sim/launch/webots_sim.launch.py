@@ -15,7 +15,7 @@ from webots_ros2_driver.urdf_spawner import URDFSpawner, get_webots_driver_node
 from launch_ros.actions import Node
 
 
-PACKAGE_NAME = 'delta_rho'
+PACKAGE_NAME = 'delta_rho_sim'
 
 def generate_launch_description():
     package_dir = get_package_share_directory(PACKAGE_NAME)

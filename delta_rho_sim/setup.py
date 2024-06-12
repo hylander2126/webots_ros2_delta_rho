@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 import os
 from glob import glob
 
-package_name = 'delta_rho'
+package_name = 'delta_rho_sim'
 path_to_share = os.path.join('share', package_name)
 
 data_files = []
